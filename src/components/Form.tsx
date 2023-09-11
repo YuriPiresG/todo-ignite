@@ -50,9 +50,10 @@ export function Form() {
           }}
           placeholder="Adicione uma nova tarefa"
           className="text-gray100 w-[40rem] h-[3.375rem] bg-gray500 border border-gray700 rounded-lg absolute top-[10rem] left-[35rem]
-      pl-[1rem]"
+      pl-[1rem] focus:ring-purple focus:border-purple focus:ring-4"
         />
-        <button className="w-[5.625rem] h-[3.25rem] bg-blueDark rounded-lg absolute top-[10rem] left-[75.5rem]">
+
+        <button className="w-[6rem] h-[3.25rem] bg-blueDark rounded-lg absolute top-[10rem] left-[75.5rem] hover:bg-blue">
           <div className="flex gap-[0.5rem] ml-[1rem]">
             <span className="font-bold text-gray100 leading-[140%]">Criar</span>
             <PlusCircle color="white" />
