@@ -7,13 +7,26 @@ import { TodoStatus } from "./TodoStatus";
 export function Form() {
   const [isComplete, setIsComplete] = useState(false);
   const [task, setTask] = useState("");
-  const [todoList, setTodoList] = useState<string[]>([]);
-  const [completedCount, setCompletedCount] = useState(0);
-  const countMsg = completedCount+ ' de ' + todoList.length;
+  const [todoList, setTodoList] = useState<
+    { task: string; isComplete: boolean }[]
+  >([]);
 
-  const handleComplete = () => {
+  const [completedCount, setCompletedCount] = useState(0);
+  const countMsg = completedCount + " de " + todoList.length;
+
+  const handleComplete = (taskIndex: number) => {
     setIsComplete(!isComplete);
-    setCompletedCount(completedCount + 1);
+
+    if (todoList[taskIndex].isComplete) {
+      setCompletedCount(completedCount - 1);
+    } else {
+      setCompletedCount(completedCount + 1);
+    }
+    setTodoList(
+      todoList.map((task, index) =>
+        index === taskIndex ? { ...task, isComplete: !task.isComplete } : task
+      )
+    );
   };
 
   const deleteTask = (taskIndex: number) => {
@@ -25,7 +38,7 @@ export function Form() {
       <form
         onSubmit={(e) => {
           e.preventDefault();
-          setTodoList([...todoList, task]);
+          setTodoList([...todoList, { task, isComplete: false }]);
           setTask("");
         }}
       >
@@ -50,15 +63,15 @@ export function Form() {
       <div className="flex justify-center items-center flex-col ml-[35rem] mt-[5rem] w-[46rem]">
         <TodoStatus
           todoSize={todoList.length}
-          doneSize={todoList.length === 0 ? "0" :countMsg }
+          doneSize={todoList.length === 0 ? "0" : countMsg}
         />
         {todoList.length != 0 &&
-          todoList.map((todo) => (
+          todoList.map((todo, index) => (
             <TodoCard
-              content={todo}
-              onDelete={() => deleteTask(todoList.indexOf(todo))}
-              onComplete={handleComplete}
-              isComplete={isComplete}
+              content={todo.task}
+              onDelete={() => deleteTask(index)}
+              onComplete={() => handleComplete(index)}
+              isComplete={todo.isComplete}
             />
           ))}
         {todoList.length === 0 && <EmptyTodo />}
